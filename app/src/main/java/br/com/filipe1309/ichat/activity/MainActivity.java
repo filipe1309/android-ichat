@@ -1,7 +1,9 @@
-package br.com.filipe1309.ichat;
+package br.com.filipe1309.ichat.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import br.com.filipe1309.ichat.R;
 
 public class MainActivity extends AppCompatActivity {
 
