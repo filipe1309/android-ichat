@@ -7,6 +7,7 @@
     tools:context="br.com.filipe1309.ichat.activity.MainActivity">
 
     <ListView
+        android:id="@+id/lv_mensagens"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -26,6 +27,7 @@
 
         <Button
             android:layout_weight="1"
+            android:text="Enviar"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
