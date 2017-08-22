@@ -13,8 +13,10 @@ import java.util.List;
 
 import br.com.filipe1309.ichat.R;
 import br.com.filipe1309.ichat.adapter.MensagemAdapter;
+import br.com.filipe1309.ichat.callback.OuvirMensagensCallback;
 import br.com.filipe1309.ichat.modelo.Mensagem;
 import br.com.filipe1309.ichat.service.ChatService;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         chatService = retrofit.create(ChatService.class);
-        chatService.ouvirMensagens();
+        Call<Mensagem> call = chatService.ouvirMensagens();
+        call.enqueue(new OuvirMensagensCallback(this));
 
         button = (Button) findViewById(R.id.btn_enviar);
         button.setOnClickListener(new View.OnClickListener() {

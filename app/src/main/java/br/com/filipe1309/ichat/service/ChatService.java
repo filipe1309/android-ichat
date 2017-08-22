@@ -1,6 +1,7 @@
 package br.com.filipe1309.ichat.service;
 
 import br.com.filipe1309.ichat.modelo.Mensagem;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -11,5 +12,5 @@ public interface ChatService {
     void enviar(@Body Mensagem mensagem);
 
     @GET("polling")
-    void ouvirMensagens();
+    Call<Mensagem> ouvirMensagens();
 }
