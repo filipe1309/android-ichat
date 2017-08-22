@@ -9,7 +9,7 @@ import retrofit2.http.POST;
 public interface ChatService {
 
     @POST("polling")
-    void enviar(@Body Mensagem mensagem);
+    Call<Void> enviar(@Body Mensagem mensagem);
 
     @GET("polling")
     Call<Mensagem> ouvirMensagens();

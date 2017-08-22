@@ -23,6 +23,6 @@ public class OuvirMensagensCallback implements Callback<Mensagem> {
 
     @Override
     public void onFailure(Call<Mensagem> call, Throwable t) {
-
+        activity.ouvirMensagem();
     }
 }
