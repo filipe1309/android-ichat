@@ -15,6 +15,8 @@ import br.com.filipe1309.ichat.R;
 import br.com.filipe1309.ichat.adapter.MensagemAdapter;
 import br.com.filipe1309.ichat.modelo.Mensagem;
 import br.com.filipe1309.ichat.service.ChatService;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
         editText = (EditText) findViewById(R.id.et_texto);
 
-        chatService = new ChatService(this);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.25.8:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        chatService = retrofit.create(ChatService.class);
         chatService.ouvirMensagens();
 
         button = (Button) findViewById(R.id.btn_enviar);
