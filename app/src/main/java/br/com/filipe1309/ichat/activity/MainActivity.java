@@ -20,14 +20,20 @@ import br.com.filipe1309.ichat.callback.OuvirMensagensCallback;
 import br.com.filipe1309.ichat.component.ChatComponent;
 import br.com.filipe1309.ichat.modelo.Mensagem;
 import br.com.filipe1309.ichat.service.ChatService;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
 
     private int idDoCliente = 1;
-    private EditText editText;
-    private Button button;
-    private ListView listaDeMensagens;
+    @BindView(R.id.et_texto)
+    EditText editText;
+    @BindView(R.id.btn_enviar)
+    Button button;
+    @BindView(R.id.lv_mensagens)
+    ListView listaDeMensagens;
     private List<Mensagem> mensagens;
 
     @Inject
@@ -40,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listaDeMensagens = (ListView) findViewById(R.id.lv_mensagens);
+        ButterKnife.bind(this);
 
         //mensagens = Arrays.asList(new Mensagem(1, "Ola alunos de android"), new Mensagem(2, "oi"));
         mensagens = new ArrayList<>();
@@ -49,21 +55,16 @@ public class MainActivity extends AppCompatActivity {
 
         listaDeMensagens.setAdapter(adapter);
 
-        editText = (EditText) findViewById(R.id.et_texto);
-
         ChatApplication app = (ChatApplication) getApplication();
         component = app.getComponent();
         component.inject(this);
 
         ouvirMensagem();
+    }
 
-        button = (Button) findViewById(R.id.btn_enviar);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity.this.chatService.enviar(new Mensagem(idDoCliente, editText.getText().toString())).enqueue(new EnviarMensagemCallback());
-            }
-        });
+    @OnClick(R.id.btn_enviar)
+    public void enviarMensagem() {
+        chatService.enviar(new Mensagem(idDoCliente, editText.getText().toString())).enqueue(new EnviarMensagemCallback());
     }
 
     public void colocaNaLista(Mensagem mensagem) {
