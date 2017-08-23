@@ -13,6 +13,7 @@ import java.util.List;
 
 import br.com.filipe1309.ichat.R;
 import br.com.filipe1309.ichat.adapter.MensagemAdapter;
+import br.com.filipe1309.ichat.app.ChatApplication;
 import br.com.filipe1309.ichat.callback.EnviarMensagemCallback;
 import br.com.filipe1309.ichat.callback.OuvirMensagensCallback;
 import br.com.filipe1309.ichat.modelo.Mensagem;
@@ -46,19 +47,16 @@ public class MainActivity extends AppCompatActivity {
 
         editText = (EditText) findViewById(R.id.et_texto);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.8:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        ChatApplication app = (ChatApplication) getApplication();
+        this.chatService = app.getChatService();
 
-        chatService = retrofit.create(ChatService.class);
         ouvirMensagem();
 
         button = (Button) findViewById(R.id.btn_enviar);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chatService.enviar(new Mensagem(idDoCliente, editText.getText().toString())).enqueue(new EnviarMensagemCallback());
+                MainActivity.this.chatService.enviar(new Mensagem(idDoCliente, editText.getText().toString())).enqueue(new EnviarMensagemCallback());
             }
         });
     }
