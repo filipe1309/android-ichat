@@ -8,19 +8,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import br.com.filipe1309.ichat.app.ChatApplication;
 import br.com.filipe1309.ichat.R;
 import br.com.filipe1309.ichat.adapter.MensagemAdapter;
-import br.com.filipe1309.ichat.app.ChatApplication;
 import br.com.filipe1309.ichat.callback.EnviarMensagemCallback;
 import br.com.filipe1309.ichat.callback.OuvirMensagensCallback;
+import br.com.filipe1309.ichat.component.ChatComponent;
 import br.com.filipe1309.ichat.modelo.Mensagem;
 import br.com.filipe1309.ichat.service.ChatService;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +29,11 @@ public class MainActivity extends AppCompatActivity {
     private Button button;
     private ListView listaDeMensagens;
     private List<Mensagem> mensagens;
-    private ChatService chatService;
+
+    @Inject
+    ChatService chatService;
+
+    private ChatComponent component;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.et_texto);
 
         ChatApplication app = (ChatApplication) getApplication();
-        this.chatService = app.getChatService();
+        component = app.getComponent();
+        component.inject(this);
 
         ouvirMensagem();
 
