@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import br.com.filipe1309.ichat.R;
@@ -54,6 +56,9 @@ public class MensagemAdapter extends BaseAdapter {
         ButterKnife.bind(this, linha);
 
         Mensagem mensagem = getItem(i);
+        int idDaMensagem = mensagem.getId();
+
+        Picasso.with(activity).load("http://api.adorable.io/avatars/285/" + idDaMensagem + ".png").into(avatar);
 
         if (idDoCliente != mensagem.getId()) {
             linha.setBackgroundColor(Color.CYAN);
