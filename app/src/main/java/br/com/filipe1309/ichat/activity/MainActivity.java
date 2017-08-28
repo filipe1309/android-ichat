@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     @BindView(R.id.lv_mensagens)
     ListView listaDeMensagens;
+    @BindView(R.id.iv_avatar_usuario)
+    ImageView avatar;
+
     private List<Mensagem> mensagens;
 
     @Inject
