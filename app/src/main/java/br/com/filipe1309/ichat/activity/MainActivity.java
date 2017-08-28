@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     ChatService chatService;
 
+    @Inject
+    Picasso picasso;
+
     private ChatComponent component;
 
     @Override
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Picasso.with(this).load("http://api.adorable.io/avatars/285/" + idDoCliente + ".png").into(avatar);
+        picasso.with(this).load("http://api.adorable.io/avatars/285/" + idDoCliente + ".png").into(avatar);
 
         //mensagens = Arrays.asList(new Mensagem(1, "Ola alunos de android"), new Mensagem(2, "oi"));
         mensagens = new ArrayList<>();

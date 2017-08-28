@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import br.com.filipe1309.ichat.R;
 import br.com.filipe1309.ichat.modelo.Mensagem;
 import butterknife.BindView;
@@ -27,6 +29,9 @@ public class MensagemAdapter extends BaseAdapter {
     TextView texto;
     @BindView(R.id.iv_avatar_mensagem)
     ImageView avatar;
+
+    @Inject
+    Picasso picasso;
 
     public MensagemAdapter(int idDoCliente, List<Mensagem> mensagens, Activity activity) {
         this.mensagens = mensagens;
@@ -58,7 +63,7 @@ public class MensagemAdapter extends BaseAdapter {
         Mensagem mensagem = getItem(i);
         int idDaMensagem = mensagem.getId();
 
-        Picasso.with(activity).load("http://api.adorable.io/avatars/285/" + idDaMensagem + ".png").into(avatar);
+        picasso.with(activity).load("http://api.adorable.io/avatars/285/" + idDaMensagem + ".png").into(avatar);
 
         if (idDoCliente != mensagem.getId()) {
             linha.setBackgroundColor(Color.CYAN);
