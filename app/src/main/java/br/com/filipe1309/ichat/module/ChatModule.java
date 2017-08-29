@@ -1,6 +1,8 @@
 package br.com.filipe1309.ichat.module;
 
 import android.app.Application;
+import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +38,13 @@ public class ChatModule{
     public EventBus getEventBus() {
         return EventBus.builder().build();
     }
+
+    @Provides
+    public InputMethodManager getInputMethodManager() {
+        InputMethodManager inputMethodManager = (InputMethodManager) app.getSystemService(Context.INPUT_METHOD_SERVICE);
+        return inputMethodManager;
+    }
+
 
     @Provides
     public Picasso getPicasso() {

@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     EventBus eventBus;
 
+    @Inject
+    InputMethodManager inputMethodManager;
+
     private ChatComponent component;
 
     @Override
@@ -106,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         chatService.enviar(new Mensagem(idDoCliente, editText.getText().toString())).enqueue(new EnviarMensagemCallback());
 
         editText.getText().clear();
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
