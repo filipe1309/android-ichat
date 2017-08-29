@@ -7,6 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import org.greenrobot.eventbus.EventBus;
 
 import br.com.filipe1309.ichat.activity.MainActivity;
+import br.com.filipe1309.ichat.event.FailureEvent;
 import br.com.filipe1309.ichat.event.MensagemEvent;
 import br.com.filipe1309.ichat.modelo.Mensagem;
 import retrofit2.Call;
@@ -33,5 +34,6 @@ public class OuvirMensagensCallback implements Callback<Mensagem> {
 
     @Override
     public void onFailure(Call<Mensagem> call, Throwable t) {
+        eventBus.post(new FailureEvent());
     }
 }

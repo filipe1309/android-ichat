@@ -29,6 +29,7 @@ import br.com.filipe1309.ichat.adapter.MensagemAdapter;
 import br.com.filipe1309.ichat.callback.EnviarMensagemCallback;
 import br.com.filipe1309.ichat.callback.OuvirMensagensCallback;
 import br.com.filipe1309.ichat.component.ChatComponent;
+import br.com.filipe1309.ichat.event.FailureEvent;
 import br.com.filipe1309.ichat.event.MensagemEvent;
 import br.com.filipe1309.ichat.modelo.Mensagem;
 import br.com.filipe1309.ichat.service.ChatService;
@@ -82,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
         component = app.getComponent();
         component.inject(this);
 
-        Call<Mensagem> call = chatService.ouvirMensagens();
-        call.enqueue(new OuvirMensagensCallback(eventBus, this));
+        ouvirMensagem(null);
 
         eventBus.register(this);
     }
@@ -106,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
     public void ouvirMensagem(MensagemEvent mensagemEvent) {
         Call<Mensagem> call = chatService.ouvirMensagens();
         call.enqueue(new OuvirMensagensCallback(eventBus, this));
+    }
+
+    @Subscribe
+    public void lidarCom(FailureEvent event) {
+        ouvirMensagem(null);
     }
 
     @Override
