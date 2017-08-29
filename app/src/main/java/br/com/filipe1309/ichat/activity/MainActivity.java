@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.PersistableBundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
         picasso.with(this).load("http://api.adorable.io/avatars/285/" + idDoCliente + ".png").into(avatar);
 
-        //mensagens = Arrays.asList(new Mensagem(1, "Ola alunos de android"), new Mensagem(2, "oi"));
-        mensagens = new ArrayList<>();
+        if (savedInstanceState != null) {
+            mensagens = (List<Mensagem>) savedInstanceState.getSerializable("mensagens");
+        } else {
+            mensagens = new ArrayList<>();
+        }
 
         MensagemAdapter adapter = new MensagemAdapter(idDoCliente, mensagens, this);
 
@@ -86,6 +91,13 @@ public class MainActivity extends AppCompatActivity {
         ouvirMensagem(null);
 
         eventBus.register(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("mensagens", (ArrayList<Mensagem>) mensagens);
     }
 
     @OnClick(R.id.btn_enviar)
