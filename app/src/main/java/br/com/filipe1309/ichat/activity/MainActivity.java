@@ -15,6 +15,9 @@ import android.widget.ListView;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,7 @@ import br.com.filipe1309.ichat.adapter.MensagemAdapter;
 import br.com.filipe1309.ichat.callback.EnviarMensagemCallback;
 import br.com.filipe1309.ichat.callback.OuvirMensagensCallback;
 import br.com.filipe1309.ichat.component.ChatComponent;
+import br.com.filipe1309.ichat.event.MensagemEvent;
 import br.com.filipe1309.ichat.modelo.Mensagem;
 import br.com.filipe1309.ichat.service.ChatService;
 import butterknife.BindView;
@@ -55,14 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ChatComponent component;
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Mensagem mensagem = (Mensagem) intent.getSerializableExtra("mensagem");
-            colocaNaLista(mensagem);
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
         component = app.getComponent();
         component.inject(this);
 
-        ouvirMensagem();
+        Call<Mensagem> call = chatService.ouvirMensagens();
+        call.enqueue(new OuvirMensagensCallback(this));
 
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        localBroadcastManager.registerReceiver(receiver, new IntentFilter("nova_mensagem"));
+        EventBus.getDefault().register(this);
     }
 
     @OnClick(R.id.btn_enviar)
@@ -94,17 +90,17 @@ public class MainActivity extends AppCompatActivity {
         chatService.enviar(new Mensagem(idDoCliente, editText.getText().toString())).enqueue(new EnviarMensagemCallback());
     }
 
-    public void colocaNaLista(Mensagem mensagem) {
-        mensagens.add(mensagem);
+    @Subscribe
+    public void colocaNaLista(MensagemEvent mensagemEvent) {
+        mensagens.add(mensagemEvent.mensagem);
 
         MensagemAdapter adapter = new MensagemAdapter(idDoCliente, mensagens, this);
 
         listaDeMensagens.setAdapter(adapter);
-
-        ouvirMensagem();
     }
 
-    public void ouvirMensagem() {
+    @Subscribe
+    public void ouvirMensagem(MensagemEvent mensagemEvent) {
         Call<Mensagem> call = chatService.ouvirMensagens();
         call.enqueue(new OuvirMensagensCallback(this));
     }
@@ -112,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        localBroadcastManager.unregisterReceiver(receiver);
+        EventBus.getDefault().unregister(this);
     }
 }
